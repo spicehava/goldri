@@ -1,0 +1,57 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" >
+    <!-- 缓存位置可以是自定义的硬盘地址也可以是JVM默认使用的缓存地址-->
+    <diskStore path="java.io.tmpdir"/>
+    <!-- 默认缓存配置. -->
+    <!--
+    配置自定义缓存
+    name：Cache的唯一标识
+    maxElementsInMemory：缓存中允许创建的最大对象数
+    maxElementsOnDisk：磁盘中最大缓存对象数，若是0表示无穷大
+    eternal：Element是否永久有效，一但设置了，timeout将不起作用，对象永不过期。
+    timeToIdleSeconds：缓存数据的钝化时间，也就是在一个元素消亡之前，
+            两次访问时间的最大时间间隔值，这只能在元素不是永久驻留时有效，
+            如果该值是 0 就意味着元素可以停顿无穷长的时间。
+    timeToLiveSeconds：缓存数据的生存时间，也就是一个元素从构建到消亡的最大时间间隔值，                               这只能在元素不是永久驻留时有效，如果该值是0就意味着元素可以停顿无穷长的时间。
+    overflowToDisk：内存不足时，是否启用磁盘缓存。
+    diskPersistent：是否缓存虚拟机重启期数据
+    diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒
+    diskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区
+    memoryStoreEvictionPolicy：缓存满了之后的淘汰算法。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）
+        Ehcache的三种清空策略;
+            FIFO，first in first out，这个是大家最熟的，先进先出。
+            LFU， Less Frequently Used，就是上面例子中使用的策略，直白一点就是讲一直以来最少被使用的。如上面所讲，缓存的元素有一个hit属性，hit值最小的将会被清出缓存。
+            LRU，Least Recently Used，最近最少使用的，缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。
+    -->
+    <defaultCache maxEntriesLocalHeap="100"
+                  eternal="false"
+                  timeToIdleSeconds="300"
+                  timeToLiveSeconds="600"
+                  overflowToDisk="true"
+                  statistics="true"
+                  maxEntriesLocalDisk="100000" />
+
+    <!-- 系统缓存 -->
+    <cache name="sysCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+
+    <!-- 用户缓存 -->
+    <cache name="userCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+
+    <!-- 资源缓存 -->
+    <cache name="resourceCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+
+    <!-- 角色缓存 -->
+    <cache name="roleCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+
+    <!-- 组织缓存 -->
+    <cache name="orgCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+
+    <!-- 数据字典缓存 -->
+    <cache name="dictCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+
+    <!-- 地址信息缓存
+    <cache name="addressCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>-->
+
+    <!-- Token缓存 -->
+    <cache name="tokenCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+</ehcache>

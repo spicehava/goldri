@@ -1,0 +1,19 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <!-- 系统表，add by xzy 20171204 -->
+    <include file="config/liquibase/system/db_added_entity_SysDict.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysLog.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysDataLog.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysUser.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysRole.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysResource.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysOrg.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysUserRole.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysRoleResource.xml"/>
+    <include file="config/liquibase/system/db_added_entity_SysUserOrg.xml"/>
+
+</databaseChangeLog>

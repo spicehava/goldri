@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <changeSet id="00000010003" author="xuzhiyuan">
+        <comment>系统业务数据操作日志</comment>
+        <createTable tableName="sys_datalog" remarks="数据操作日志表，用于记录表的增、删、改详细信息">
+            <column name="id" type="varchar(64)" remarks="主键：所有表的主键都是id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="table_name" type="varchar(64)" remarks="操作的业务表名称">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="data_id" type="varchar(64)" remarks="数据ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="data_content" type="text" remarks="数据内容：json格式">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="version_number" type="int" remarks="版本号：新增版本号为1，以后每次修改递增1">
+                <constraints nullable="false" />
+            </column>
+            <!-- audit fields-->
+            <column name="create_by" type="varchar(64)" remarks="创建人ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="creater" type="varchar(64)" remarks="创建人姓名：记录姓名，便于页面显示，提高查询效率">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="create_date" type="datetime" remarks="创建时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_by" type="varchar(64)" remarks="更新人">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_date" type="datetime" remarks="更新时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="del_flag" type="varchar(32)" defaultValue="NORMAL" remarks="删除标识：默认NORMAL。数据字典：DelFlag">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <!-- 约束：索引 -->
+        <createIndex tableName="sys_datalog" indexName="idx_datalog_tname_did" unique="false">
+            <column name="table_name" />
+            <column name="data_id" />
+        </createIndex>
+        <createIndex tableName="sys_datalog" indexName="idx_datalog_creater" unique="false">
+            <column name="creater" />
+        </createIndex>
+    </changeSet>
+
+
+</databaseChangeLog>

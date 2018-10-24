@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.goldri.web.system.mapper.SysOrgMapper">
+  <resultMap id="BaseResultMap" type="club.goldri.web.system.domain.SysOrg">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+  </resultMap>
+  
+  <select id="listOrgByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+        so.id,
+        so.name,
+        so.description,
+        so.create_by,
+        so.create_date,
+        so.update_by,
+        so.update_date,
+        so.del_flag
+    FROM
+        sys_user_org suo
+    INNER JOIN sys_org so ON so.id = suo.org_id
+    WHERE
+        suo.user_id = #{userId}
+        AND suo.del_flag = 'NORMAL'
+  </select>
+</mapper>

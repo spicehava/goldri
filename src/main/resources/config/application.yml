@@ -1,0 +1,72 @@
+server:
+  port: 8080
+spring:
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    name: system
+    url: jdbc:mysql://47.104.21.216:3306/cc3u?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+liquibase:
+  enabled: false
+
+# 系统参数配置
+system:
+  config:
+    #排除的过滤url
+    filterExclude: /swagger*,/webjars*,/v2/*,/favicon.ico,/druid*
+  user:
+    #用户的原始密码
+    oriPwd: 111111
+#  corsfilter:
+#    allowOrigin:
+#    allowMethods: GET,POST,DELETE,OPTIONS
+#    allowCredentials: true
+#    allowHeaders: Origin, X-Requested-With, Content-Type, Accept, Cache-Control, Authorization, username
+#    exposeHeaders:
+
+# 日志配置
+#debug: true
+logging:
+  level:
+#    root: debug
+    club.goldri: debug
+    net.sj: debug
+    org.springframework.cache: debug
+    tk.mybatis.springboot.mapper: debug
+    org.springframework.web: debug
+#
+#mybatis:
+#    type-aliases-package: club.goldri.web.*.domain
+#    mapper-locations: classpath:mapper/*/*.xml
+#
+#mapper:
+#    mappers:
+#        - BaseMapper
+#    not-empty: false
+#    identity: MYSQL
+#
+#pagehelper:
+#    helperDialect: mysql
+#    reasonable: true
+#    supportMethodsArguments: true
+#    params: count=countSql
+uploadclasspath: E:\\upload

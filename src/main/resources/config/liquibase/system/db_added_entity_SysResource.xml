@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <changeSet id="00000010006" author="xuzhiyuan">
+
+        <createTable tableName="sys_resource" remarks="系统资源表，记录菜单、按钮资源信息">
+            <column name="id" type="varchar(64)" remarks="主键：所有表的主键都是id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(255)" remarks="资源名称（菜单/按钮名称）">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="url" type="varchar(255)" remarks="URL地址">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="permission" type="varchar(64)" remarks="权限码">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="icon" type="varchar(64)" remarks="图标">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="level" type="int" remarks="层级">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="type" type="varchar(32)" remarks="资源类型。数据字典：ResourceType">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="sort" type="int" remarks="排序">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="parent_id" type="varchar(64)" remarks="父资源ID">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- audit fields-->
+            <column name="create_by" type="varchar(64)" remarks="创建人ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="creater" type="varchar(64)" remarks="创建人名称">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="create_date" type="datetime" remarks="创建时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_by" type="varchar(64)" remarks="更新人">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="updater" type="varchar(64)" remarks="更新人姓名">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_date" type="datetime" remarks="更新时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="del_flag" type="varchar(32)" defaultValue="NORMAL" remarks="删除标识：默认NORMAL。数据字典：DelFlag">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <!-- 初始化数据 -->
+        <loadData tableName="sys_resource"
+                  file="config/liquibase/db/sys_resource.csv"
+                  encoding="UTF-8"
+                  separator="," />
+
+    </changeSet>
+</databaseChangeLog>

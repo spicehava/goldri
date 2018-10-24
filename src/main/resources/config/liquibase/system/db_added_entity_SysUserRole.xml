@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <changeSet id="00000010008" author="xuzhiyuan">
+
+        <createTable tableName="sys_user_role" remarks="用户角色关系表">
+            <column name="id" type="varchar(64)" remarks="主键：所有表的主键都是id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="varchar(64)" remarks="用户ID">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="role_id" type="varchar(64)" remarks="角色ID">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- audit fields-->
+            <column name="create_by" type="varchar(64)" remarks="创建人ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="create_date" type="datetime" remarks="创建时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_by" type="varchar(64)" remarks="更新人">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_date" type="datetime" remarks="更新时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="del_flag" type="varchar(32)" defaultValue="NORMAL" remarks="删除标识：默认NORMAL。数据字典：DelFlag">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <!-- 约束条件 -->
+        <addForeignKeyConstraint constraintName="fk_ur_user_id"
+                                 baseTableName="sys_user_role"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="sys_user"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_ur_role_id"
+                                 baseTableName="sys_user_role"
+                                 baseColumnNames="role_id"
+                                 referencedTableName="sys_role"
+                                 referencedColumnNames="id"/>
+
+        <!-- 初始化数据 -->
+        <loadData tableName="sys_user_role"
+                  file="config/liquibase/db/sys_user_role.csv"
+                  encoding="UTF-8"
+                  separator="," />
+    </changeSet>
+</databaseChangeLog>

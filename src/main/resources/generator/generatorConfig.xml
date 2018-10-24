@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="config/application.yml"/>
+
+    <!-- 设置rootClass的类路径-->
+    <classPathEntry location="D:/workspace/cc3u/target/classes" />
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="club.goldri.core.common.mapper.BaseMapper"/>
+        </plugin>
+        <commentGenerator >
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="false" />
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/framework"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!--生成Model类存放位置-->
+        <javaModelGenerator targetPackage="club.goldri.web.system.domain" targetProject="src/main/java">
+            <!--继承类-->
+            <property name="rootClass" value="club.goldri.core.common.domain.BaseDomain"/>
+        </javaModelGenerator>
+
+        <!--生成映射文件存放位置-->
+        <sqlMapGenerator targetPackage="system" targetProject="src/main/resources/mapper"/>
+
+        <!--生成Dao类存放位置-->
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
+                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
+                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
+                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
+        -->
+        <javaClientGenerator targetPackage="club.goldri.web.system.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+        <!--<table tableName="fac%">
+            &lt;!&ndash;mysql 配置&ndash;&gt;
+           &lt;!&ndash; <generatedKey column="id" sqlStatement="Mysql" identity="false"/>&ndash;&gt;
+
+            &lt;!&ndash;oracle 配置&ndash;&gt;
+            &lt;!&ndash;<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>&ndash;&gt;
+        </table>-->
+
+        <!--<table tableName="sys_role" domainObjectName="Role"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <ignoreColumn column="id" />
+            <ignoreColumn column="createBy" />
+            <ignoreColumn column="createDate" />
+            <ignoreColumn column="updateBy" />
+            <ignoreColumn column="updateDate" />
+        </table>
+        <table tableName="sys_resource" domainObjectName="Resource"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <ignoreColumn column="id" />
+            <ignoreColumn column="createBy" />
+            <ignoreColumn column="createDate" />
+            <ignoreColumn column="updateBy" />
+            <ignoreColumn column="updateDate" />
+        </table>
+        <table tableName="sys_user_role" domainObjectName="UserRole"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+
+        </table>
+        <table tableName="sys_role_resource" domainObjectName="RoleResource"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+
+        </table>-->
+        <table tableName="sys_resource"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+
+        </table>
+
+    </context>
+</generatorConfiguration>

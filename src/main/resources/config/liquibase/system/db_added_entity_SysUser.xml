@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <changeSet id="00000010004" author="xuzhiyuan">
+
+        <createTable tableName="sys_user" remarks="系统用户表">
+            <column name="id" type="varchar(64)" remarks="主键：所有表的主键都是id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="username" type="varchar(64)" remarks="登录用户名">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="password" type="varchar(64)" remarks="登录密码：加密算法（用户名+私盐）">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="salt" type="varchar(64)" remarks="盐：加密用">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="name" type="varchar(64)" remarks="用户姓名">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="position" type="varchar(32)" remarks="职位。数据字典：UserPosition">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="enter_date" type="date" remarks="入职日期：精确到天">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sex" type="varchar(32)" remarks="性别。数据字典：UserSex">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="telphone" type="varchar(32)" remarks="办公电话：可以是座机，也可以是手机">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="mobile" type="varchar(32)" remarks="移动电话：用于发送短信">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="email" type="varchar(64)" remarks="邮件：用于发送邮件信息">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="state" type="varchar(32)"  defaultValue="NORMAL" remarks="用户状态：默认NORMAL。数据字典：UserState">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- audit fields-->
+            <column name="create_by" type="varchar(64)" remarks="创建人ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="create_date" type="datetime" remarks="创建时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_by" type="varchar(64)" remarks="更新人">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_date" type="datetime" remarks="更新时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="del_flag" type="varchar(32)" defaultValue="NORMAL" remarks="删除标识：默认NORMAL。数据字典：DelFlag">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <!-- 初始化数据 -->
+        <loadData tableName="sys_user"
+                  file="config/liquibase/db/sys_user.csv"
+                  encoding="UTF-8"
+                  separator="," />
+    </changeSet>
+</databaseChangeLog>

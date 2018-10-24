@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.goldri.web.system.mapper.SysResourceMapper">
+    <resultMap id="BaseResultMap" type="club.goldri.web.system.domain.SysResource">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="permission" jdbcType="VARCHAR" property="permission"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="target" jdbcType="VARCHAR" property="target"/>
+        <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="creater" jdbcType="VARCHAR" property="creater"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="updater" jdbcType="VARCHAR" property="updater"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+    sr.id,
+    sr.name,
+    sr.url,
+    sr.permission,
+    sr.icon,
+    sr.level,
+    sr.type,
+    sr.sort,
+    sr.target,
+    sr.parent_id,
+    sr.create_by,
+    sr.creater,
+    sr.create_date,
+    sr.update_by,
+    sr.updater,
+    sr.update_date,
+    sr.del_flag
+  </sql>
+    <!-- 根据用户id获取该用户的权限 -->
+    <select id="listResourceByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        DISTINCT <include refid="baseColumns"/>
+        FROM
+        sys_user_role sur
+        INNER JOIN sys_role_resource srr ON sur.role_id = srr.role_id AND srr.del_flag = 'NORMAL'
+        INNER JOIN sys_resource sr ON sr.id = srr.resource_id AND sr.del_flag = 'NORMAL'
+        WHERE
+        sur.user_id = #{userId}
+    </select>
+
+    <!-- 根据角色id获取角色资源 -->
+    <select id="listResourceByRoleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM
+        sys_role_resource srr
+        INNER JOIN sys_resource sr ON sr.id = srr.resource_id
+        WHERE
+        srr.role_id = #{roleId}
+    </select>
+
+    <resultMap id="idsMap" type="club.goldri.web.system.domain.SysResource">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+    </resultMap>
+    <!-- 根据id 向上查询所有记录 -->
+    <select id="listResParentIdUp" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT
+        getResTreeUp(id) id
+        FROM
+        sys_resource
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- selectMap -->
+    <resultMap id="ResCheckedMap" type="club.goldri.web.system.domain.SysResource" extends="BaseResultMap">
+        <result column="checked" property="checked"/>
+    </resultMap>
+    <!-- 根据roleId获取所有资源，并标识该资源是否checked -->
+    <select id="listAllResourceByRoleId" resultMap="ResCheckedMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="baseColumns"/>, 'false' checked
+        FROM
+        sys_resource sr
+        WHERE
+        NOT EXISTS (
+        SELECT
+        *
+        FROM
+        sys_role_resource srr
+        WHERE
+        srr.resource_id = sr.id
+        AND srr.role_id = #{roleId}
+        AND srr.del_flag = 'NORMAL'
+        )
+        UNION ALL
+        SELECT
+        <include refid="baseColumns"/>, 'true' checked
+        FROM
+        sys_resource sr
+        WHERE
+        EXISTS (
+        SELECT
+        *
+        FROM
+        sys_role_resource srr
+        WHERE
+        srr.resource_id = sr.id
+        AND srr.role_id = #{roleId}
+        AND srr.del_flag = 'NORMAL'
+        )
+    </select>
+</mapper>

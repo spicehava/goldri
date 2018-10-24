@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <changeSet id="00000010001" author="xuzhiyuan">
+        <comment>数据字典表</comment>
+        <createTable tableName="sys_dict" remarks="数据字典表">
+
+            <column name="type" type="varchar(64)" remarks="字典类型">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="code" type="varchar(32)" remarks="字典值">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="label" type="varchar(64)" remarks="显示信息">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="sort" type="int" remarks="排序">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="description" type="varchar(255)" remarks="描述">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="is_design" type="varchar(32)" defaultValue="0" remarks="是否设计字段：用于判断该字段是否存在系统硬编码或增加该类型值对系统无效果，对于标识为是的字段不可以修改、删除。数据字典：YesOrNo">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- audit fields-->
+            <column name="create_by" type="varchar(64)" remarks="创建人ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="create_date" type="datetime" remarks="创建时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_by" type="varchar(64)" remarks="更新人">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_date" type="datetime" remarks="更新时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="del_flag" type="varchar(32)" defaultValue="NORMAL" remarks="删除标识：默认NORMAL。数据字典：DelFlag">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <!-- 约束：索引 -->
+        <createIndex tableName="sys_dict" indexName="idx_type_code" unique="false">
+            <column name="type" />
+            <column name="code"></column>
+        </createIndex>
+
+        <!-- 初始化数据 -->
+        <loadData tableName="sys_dict"
+                  file="config/liquibase/db/sys_dict.csv"
+                  encoding="UTF-8"
+                  separator="," />
+    </changeSet>
+
+
+</databaseChangeLog>

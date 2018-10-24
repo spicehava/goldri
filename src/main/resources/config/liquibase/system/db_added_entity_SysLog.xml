@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <changeSet id="00000010002" author="xuzhiyuan">
+        <comment>系统操作日志</comment>
+        <createTable tableName="sys_log" remarks="系统操作日志表，用于记录操作及操作参数等信息">
+            <column name="id" type="varchar(64)" remarks="主键：所有表的主键都是id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="type" type="varchar(32)" remarks="日志类型。数据字典：LogType">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="description" type="varchar(255)" remarks="日志操作描述：记录操作描述信息">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="ip" type="varchar(64)" remarks="ip地址">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="browser" type="varchar(255)" remarks="用户代理：记录用户所用浏览器信息">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="uri" type="varchar(64)" remarks="请求资源地址：请求的url">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="method" type="varchar(8)" remarks="请求方法：包括GET、POST等方法">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="params" type="text" remarks="参数">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="exception" type="text" remarks="异常信息">
+                <constraints nullable="true" />
+            </column>
+            <!-- audit fields-->
+            <column name="create_by" type="varchar(64)" remarks="创建人ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="creater" type="varchar(64)" remarks="创建人姓名：记录姓名，便于页面显示，提高查询效率">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="create_date" type="datetime" remarks="创建时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_by" type="varchar(64)" remarks="更新人">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="update_date" type="datetime" remarks="更新时间">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="del_flag" type="varchar(32)" defaultValue="NORMAL" remarks="删除标识：默认NORMAL。数据字典：DelFlag">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <!-- 约束：索引 -->
+        <createIndex tableName="sys_log" indexName="idx_log_description" unique="false">
+            <column name="description" />
+        </createIndex>
+        <createIndex tableName="sys_log" indexName="idx_log_creater" unique="false">
+            <column name="creater" />
+        </createIndex>
+    </changeSet>
+
+
+</databaseChangeLog>
